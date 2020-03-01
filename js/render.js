@@ -8,6 +8,7 @@
     pictureContainer.innerHTML = '';
     for (let i = 0; i <= quantity; i++) {
       let imagesBackgroundElement = pictureTemplate.cloneNode(true);
+      imagesBackgroundElement.querySelector('img').setAttribute('data-index', `${i}`);
       imagesBackgroundElement.querySelector('img').src = data[i].url;
       imagesBackgroundElement.querySelector('.picture-comments').textContent = data[i].comments.length;
       imagesBackgroundElement.querySelector('.picture-likes').textContent = data[i].likes;

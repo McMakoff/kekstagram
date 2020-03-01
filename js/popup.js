@@ -1,11 +1,13 @@
 'use strict';
 
 (function() {
-    var uploadFile = document.querySelector('#upload-file');
+    var fileChooser = document.querySelector('#upload-file');
     var uploadOverlay = document.querySelector('.upload-overlay');
     var uploadCancel = uploadOverlay.querySelector('#upload-cancel');
+    var preview = document.querySelector('.effect-image-preview');
     var ESC_PRESS = 27;
     var ENTER_PRESS = 13;
+    var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
     var onPopupEscPress = function(e) {
         if(e.keyCode === ESC_PRESS) {
@@ -24,7 +26,24 @@
         document.removeEventListener('keydown', onPopupEscPress)
     };
 
-    uploadFile.addEventListener('change', openPopup);
+    fileChooser.addEventListener('change', function() {
+      var file = fileChooser.files[0];
+      var fileName = file.name.toLowerCase();
+      var matches = FILE_TYPES.some(function(el) {
+        return fileName.endsWith(el);
+      });
+
+      if(matches) {
+        openPopup();
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function() {
+          preview.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
+    });
 
     uploadCancel.addEventListener('click', closePopup);
 
